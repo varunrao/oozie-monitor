@@ -1,0 +1,84 @@
+ <div class="row">
+                <div class="col-lg-12">
+                     <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Counts/Average
+<div ng-controller="JobHistoryControllerV2 as jobController" ng-app="phonecatApp">
+    <div class="ng-scope col-lg-4">
+        <table><tr>
+        <td><button type="button" class="btn btn-primary" align="right" ng-click="reloadJobHistory()">Reload data</button></td>
+        <td><div ng-if="loading" align="center">Loading .. <img src="static/images/ajax-loader.gif"><br></div></td>
+            </tr>
+        </table>
+        <br>
+    </div>
+<br>
+<table id="jobCounts">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Total count</th>
+                <th>Successful</th>
+                <th>Failed</th>
+                <th>Average time</th>
+            </tr>
+        </thead>
+
+        <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Total count</th>
+                <th>Successful</th>
+                <th>Failed</th>
+                <th>Average time</th>
+            </tr>
+        </tfoot>
+
+        <tbody>
+
+        </tbody>
+    </table>
+</div>
+                                  </div>
+                         </div>
+                </div>
+                     </div>
+ <div class="row">
+                <div class="col-lg-12">
+                     <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Store sales job info
+<table id="jobHistory" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Start Time</th>
+                <th>Time in min</th>
+                <th>Time</th>
+                <th>JobId</th>
+            </tr>
+        </thead>
+
+        <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Status</th>
+                 <th>Start Time</th>
+                <th>Time in min</th>
+                <th>Time</th>
+                <th>JobId</th>
+            </tr>
+        </tfoot>
+
+        <tbody>
+
+        </tbody>
+    </table>
+</div>
+                                     </div>
+                         </div>
+                </div>
+                     </div>

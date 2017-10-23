@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en" ng-app='phonecatApp'>
+
+<head lang="en">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>BigRed - Store Sales Dashboard</title>
+    <!-- jQuery -->
+    <script src="static/js/jquery-1.11.2.min.js"></script>
+      <script src="https://code.angularjs.org/1.3.0/angular.js"></script>
+  <script src="https://code.angularjs.org/1.3.0/angular-route.js"></script>
+  <script src="https://code.angularjs.org/1.3.0/angular-resource.js"></script>
+  <script src="https://code.angularjs.org/1.3.0/angular-sanitize.js"></script>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+
+   <!-- Timeline CSS -->
+    <link href="static/css/timeline.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="static/css/sb-admin-2.css" rel="stylesheet">
+
+
+
+    <!-- Morris Charts CSS -->
+    <link href="static/css/jquery.dataTables.min.css" rel="stylesheet">
+    <!-- Custom Fonts -->
+    <link href="static/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+      <!-- THIS APP. -->
+        <script src="static/js/services.js"></script>
+  <script src="static/js/directives.js"></script>
+  <script src="static/js/filters.js"></script>
+  <script src="static/js/controllers.js"></script>
+  <script src="static/js/App.js"></script>
+  <link href="static/css/table.css" rel="stylesheet">
+  <link href="static/css/reveal.css" rel="stylesheet">
+  <link href="static/css/TableTools.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Big Red Store Sales Dashboard</a>
+            </div>
+            <!-- /.navbar-header -->
+
+
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li class="sidebar-search">
+                            <div class="input-group custom-search-form">
+                                <input type="text" class="form-control" placeholder="Search...">
+                                <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                            </div>
+                            <!-- /input-group -->
+                        </li>
+                        <li>
+                            <a href="/"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a href="proposal.html"><i class="fa fa-wrench fa-fw"></i>Proposal</a>
+                        </li>
+
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Dashboard</h1>
+                     <div id="curve_chart"></div>
+                     <div id="highChart" style=""></div>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                     <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Store sales job info
+                            <div id="chartContainer">
+<script src="/static/js/d3.v3.4.8.js"></script>
+<script src="/static/js/dimple.v2.1.3.js"></script>
+<script type="text/javascript">
+var svg = dimple.newSvg("#chartContainer", 690, 450);
+d3.tsv("/data/example_data.tsv", function (data) {
+// Latest period only
+dimple.filterData(data, "Date", "01/12/2012");
+// Create the chart
+var myChart = new dimple.chart(svg, data);
+myChart.setBounds(60, 30, 420, 330)
+// Create a standard bubble of SKUs by Price and Sales Value
+// We are coloring by Owner as that will be the key in the legend
+myChart.addMeasureAxis("x", "Price");
+myChart.addMeasureAxis("y", "Sales Value");
+myChart.addSeries(["SKU", "Channel", "Owner"], dimple.plot.bubble);
+var myLegend = myChart.addLegend(590, 100, 60, 300, "Right");
+myChart.draw();
+// This is a critical step. By doing this we orphan the legend. This
+// means it will not respond to graph updates. Without this the legend
+// will redraw when the chart refreshes removing the unchecked item and
+// also dropping the events we define below.
+myChart.legends = [];
+// This block simply adds the legend title. I put it into a d3 data
+// object to split it onto 2 lines. This technique works with any
+// number of lines, it isn't dimple specific.
+svg.selectAll("title_text")
+.data(["Click legend to","show/hide owners:"])
+.enter()
+.append("text")
+.attr("x", 499)
+.attr("y", function (d, i) { return 90 + i * 14; })
+.style("font-family", "sans-serif")
+.style("font-size", "10px")
+.style("color", "Black")
+.text(function (d) { return d; });
+// Get a unique list of Owner values to use when filtering
+var filterValues = dimple.getUniqueValues(data, "Owner");
+// Get all the rectangles from our now orphaned legend
+myLegend.shapes.selectAll("rect")
+// Add a click event to each rectangle
+.on("click", function (e) {
+// This indicates whether the item is already visible or not
+var hide = false;
+var newFilters = [];
+// If the filters contain the clicked shape hide it
+filterValues.forEach(function (f) {
+if (f === e.aggField.slice(-1)[0]) {
+hide = true;
+} else {
+newFilters.push(f);
+}
+});
+// Hide the shape or show it
+if (hide) {
+d3.select(this).style("opacity", 0.2);
+} else {
+newFilters.push(e.aggField.slice(-1)[0]);
+d3.select(this).style("opacity", 0.8);
+}
+// Update the filters
+filterValues = newFilters;
+// Filter the data
+myChart.data = dimple.filterData(data, "Owner", filterValues);
+// Passing a duration parameter makes the chart animate. Without
+// it there is no transition
+myChart.draw(800);
+});
+});
+</script>
+</div>
+                            </div>
+                         </div>
+                </div>
+                <!-- /.col-lg-8 -->
+
+                <!-- /.col-lg-4 -->
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Chart Stats
+                            <div class="pull-right">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                        Actions
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu pull-right" role="menu">
+                                        <li><a href="#">Action</a>
+                                        </li>
+                                        <li><a href="#">Another action</a>
+                                        </li>
+                                        <li><a href="#">Something else here</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li><a href="#">Separated link</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div id="morris-area-chart"></div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                  
+                </div>
+                <!-- /.col-lg-8 -->
+                
+                <!-- /.col-lg-4 -->
+            </div>
+             <!--
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="row-fluid">
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-green">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-tasks fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">12</div>
+                                    <div>New Tasks!</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-yellow">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-shopping-cart fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">124</div>
+                                    <div>New Orders!</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-red">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-support fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">13</div>
+                                    <div>Support Tickets!</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            /.row -->
+            <!-- /.row -->
+        </div>
+
+
+    </div>
+    <!-- /#wrapper -->
+
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="static/js/bootstrap.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="static/js/jquery.dataTables.min.js"></script>
+    <script src="static/js/angular-datatables.min.js"></script>
+    <script src="static/js/jquery.dataTables.rowGrouping.js"></script>
+     <script type="text/javascript"
+          src="https://www.google.com/jsapi?autoload={
+            'modules':[{
+              'name':'visualization',
+              'version':'1',
+              'packages':['corechart']
+            }]
+          }"></script>
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="http://code.highcharts.com/modules/exporting.js"></script>
+    <script src="static/js/TableTools.js"></script>
+    <script src="ZeroClipboard/ZeroClipboard.js"></script>
+
+</body>
+
+</html>
+
